@@ -15,6 +15,6 @@ def analyze_game(pgn_text):
             results.append({"move": str(move), "evaluation": str(score)})
         engine.quit()
         return results
-print(analyze_game("1. e4 e5 2. Nf3 Nc6"))
+
 
       
