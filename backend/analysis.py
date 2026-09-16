@@ -9,6 +9,7 @@ def analyze_game(pgn_text):
         board = game.board()
         results = []
         previous_eval = 0
+        previous_best = None 
         for move in game.mainline_moves():
             player = "white" if board.turn == chess.WHITE else "black"
             board.push(move)
@@ -17,7 +18,9 @@ def analyze_game(pgn_text):
             eval_cp = score.score(mate_score=10000)
             delta = eval_cp - previous_eval
             is_blunder = (player == "white" and delta <= -200) or (player == "black" and delta >= 200)
-            results.append({"move": str(move), "player": player, "evaluation": str(score), "delta": delta, "is_blunder": is_blunder})
+            results.append({"move": str(move), "player": player, "evaluation": str(score), "delta": delta, "is_blunder": is_blunder, "best_move": previous_best})
+            pv = info.get("pv", []) 
+            previous_best = str(pv[0]) if pv else None 
             previous_eval = eval_cp
         engine.quit()
         return results
